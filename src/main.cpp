@@ -1,10 +1,12 @@
 #include <Arduino.h>
+#include <DHT.h>
 #include <HX710B.h>
 #include <SettingsGyver.h>
 
 #define SOIL_MOISTURE_PIN 34
 #define PRESSURE_OUT 35
 #define PRESSURE_SCK 32
+#define DHT_PIN 33
 
 #define SOIL_MOISTURE_MIN 3632
 #define SOIL_MOISTURE_MAX 2141
@@ -14,6 +16,7 @@ TaskHandle_t sensors_task;
 
 // Libs variables
 SettingsGyver sett("Gorshok");
+DHT dht(DHT_PIN, DHT11);
 // HX710B pressure_module;
 
 // Variables
@@ -34,7 +37,7 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
 
 float getSoilMoisture() {
     float result = analogRead(SOIL_MOISTURE_PIN);
-    map(result, SOIL_MOISTURE_MIN, SOIL_MOISTURE_MAX, 0, 100);
+    result = map(result, SOIL_MOISTURE_MIN, SOIL_MOISTURE_MAX, 0, 100);
 
     return result;
 }
@@ -67,6 +70,8 @@ void sensorsTaskFunc(void* pvParameters) {
     for (;;) {
         // pressure = getPressure();
         soil_moisture = getSoilMoisture();
+        temp = dht.readTemperature();
+        hum = dht.readHumidity();
 
         vTaskDelay(pdMS_TO_TICKS(500));
     }
@@ -92,6 +97,9 @@ void setup() {
     // while (!pressure_module.is_ready()) {
     //     delay(100);
     // }
+
+    // Temperature / Humidity module setup
+    dht.begin();
 
     // Pin wifi handle to core 1
     xTaskCreatePinnedToCore(
