@@ -24,7 +24,7 @@
 **Пины (по умолчанию в коде):**
 - Soil moisture: `GPIO34` (ADC)
 - DHT11: `GPIO33`
-- LDR: `LDR_PIN = 31` (на многих ESP32 такого GPIO нет — выберите любой ADC-пин и обновите константу)
+- LDR: `GPIO35`
 
 ### Как запустить
 1. Установите **PlatformIO** (VS Code или CLI).
@@ -37,8 +37,6 @@
 
 ### Настройка калибровки
 Значения `SOIL_MOISTURE_MIN` и `SOIL_MOISTURE_MAX` зависят от конкретного датчика/почвы. Подберите их под свои условия (сухо/в воде), чтобы проценты были корректными.
-
-> Примечание: в текущем коде расчёт освещённости (`getIlluminationLevel`) есть, но обновление значения не вызывается — можно добавить чтение LDR в `sensorsTaskFunc()`.
 
 ---
 
@@ -61,7 +59,7 @@
 **Pins (defaults in code):**
 - Soil moisture: `GPIO34` (ADC)
 - DHT11: `GPIO33`
-- LDR: `LDR_PIN = 31` (GPIO31 doesn’t exist on many ESP32 boards — pick any ADC pin and update the constant)
+- LDR: `GPIO35`
 
 ### Usage
 1. Install **PlatformIO** (VS Code or CLI).
@@ -74,8 +72,6 @@
 
 ### Calibration
 `SOIL_MOISTURE_MIN` and `SOIL_MOISTURE_MAX` depend on your sensor/soil. Measure “dry” vs “wet” readings and adjust these constants for accurate percentages.
-
-> Note: the light-level helper (`getIlluminationLevel`) exists, but the value isn’t updated yet — add an LDR read in `sensorsTaskFunc()` if you need it.
 
 ---
 

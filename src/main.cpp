@@ -4,7 +4,7 @@
 
 #define SOIL_MOISTURE_PIN 34
 #define DHT_PIN 33
-#define LDR_PIN 31
+#define LDR_PIN 35
 
 #define SOIL_MOISTURE_MIN 3632
 #define SOIL_MOISTURE_MAX 2141
@@ -32,6 +32,7 @@ float mapfloat(float x, float in_min, float in_max, float out_min, float out_max
 float getSoilMoisture() {
     float result = analogRead(SOIL_MOISTURE_PIN);
     result = mapfloat(result, SOIL_MOISTURE_MIN, SOIL_MOISTURE_MAX, 0, 100);
+    if (result < 0) result = 0;
 
     return result;
 }
@@ -39,6 +40,7 @@ float getSoilMoisture() {
 float getIlluminationLevel() {
     float result = analogRead(LDR_PIN);
     result = mapfloat(result, LDR_MIN, LDR_MAX, 0, 100);
+    if (result < 0) result = 0;
 
     return result;
 }
@@ -73,6 +75,7 @@ void sensorsTaskFunc(void* pvParameters) {
         soil_moisture = getSoilMoisture();
         temp = dht.readTemperature();
         hum = dht.readHumidity();
+        illumination_level = getIlluminationLevel();
 
         vTaskDelay(pdMS_TO_TICKS(500));
     }
