@@ -9,8 +9,8 @@
 #define SOIL_MOISTURE_MIN 3632
 #define SOIL_MOISTURE_MAX 2141
 
-#define LDR_MIN 0
-#define LDR_MAX 4096
+#define LDR_MIN 4096
+#define LDR_MAX 0
 
 TaskHandle_t wifi_task;
 TaskHandle_t sensors_task;
@@ -25,13 +25,9 @@ float hum = 0.0f;
 float soil_moisture = 0.0f;
 float illumination_level = 0.0f;
 
-float mapfloat(float x, float in_min, float in_max, float out_min, float out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
 float getSoilMoisture() {
     float result = analogRead(SOIL_MOISTURE_PIN);
-    result = mapfloat(result, SOIL_MOISTURE_MIN, SOIL_MOISTURE_MAX, 0, 100);
+    result = map(result, SOIL_MOISTURE_MIN, SOIL_MOISTURE_MAX, 0, 100);
     if (result < 0) result = 0;
 
     return result;
@@ -39,7 +35,7 @@ float getSoilMoisture() {
 
 float getIlluminationLevel() {
     float result = analogRead(LDR_PIN);
-    result = mapfloat(result, LDR_MIN, LDR_MAX, 0, 100);
+    result = map(result, LDR_MIN, LDR_MAX, 0, 100);
     if (result < 0) result = 0;
 
     return result;
