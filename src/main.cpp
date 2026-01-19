@@ -50,6 +50,15 @@ void build(sets::Builder& b) {
 
         b.endGroup();
     }
+
+    {
+        sets::Menu menu(b, "Графики");
+
+        b.PlotStack(10, "Температура");
+        b.PlotStack(11, "Влажность");
+        b.PlotStack(12, "Почва");
+        b.PlotStack(13, "Свет");
+    }
 }
 
 void update(sets::Updater& upd) {
@@ -57,6 +66,18 @@ void update(sets::Updater& upd) {
     upd.update(1, hum);
     upd.update(2, soil_moisture);
     upd.update(3, illumination_level);
+
+    float temp_plot[] = {temp};
+    upd.updatePlot(10, temp_plot);
+
+    float hum_plot[] = {hum};
+    upd.updatePlot(11, hum_plot);
+
+    float soil_plot[] = {soil_moisture};
+    upd.updatePlot(12, soil_plot);
+
+    float illum_plot[] = {illumination_level};
+    upd.updatePlot(13, illum_plot);
 }
 
 void wifiTaskFunc(void* pvParameters) {
